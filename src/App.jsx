@@ -8,7 +8,7 @@ import { initialCustomers, initialTrainings } from './data/mockData';
 
 // Determine basename for GitHub Pages deployment
 const basename = process.env.NODE_ENV === 'production'
-  ? '/personal-trainer-app' // Change this to match your repo name
+  ? '/personalTrainerApp' // Change this to match your repo name
   : '/';
 
 function App() {
