@@ -1,7 +1,12 @@
+/**
+ * CustomerForm component
+ * Form for adding new customers or editing existing ones
+ */
 import { useState, useEffect } from 'react';
 import { generateId } from '../../data/mockData';
 
 const CustomerForm = ({ customer, onSave, onCancel }) => {
+    // Form data state with default empty values
     const [formData, setFormData] = useState({
         id: '',
         firstName: '',
@@ -12,14 +17,22 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
         city: ''
     });
 
-    // Initialize form with customer data if editing
+    /**
+     * Initialize form with customer data if editing an existing customer
+     * This effect runs when the customer prop changes
+     */
     useEffect(() => {
         if (customer) {
             setFormData(customer);
         }
     }, [customer]);
 
-    // Handle form input changes
+    /**
+     * Handle form input changes
+     * Updates the formData state when any field changes
+     * 
+     * @param {Event} e - Input change event
+     */
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -28,11 +41,16 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
         }));
     };
 
-    // Handle form submission
+    /**
+     * Handle form submission
+     * Either updates an existing customer or creates a new one
+     * 
+     * @param {Event} e - Form submit event
+     */
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Generate id if adding new customer
+        // Generate id if adding new customer, or use existing id if editing
         const customerToSave = customer
             ? formData
             : { ...formData, id: generateId() };
@@ -40,13 +58,14 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
         onSave(customerToSave);
     };
 
-    // Form title based on whether we're adding or editing
+    // Determine form title based on whether we're adding or editing
     const formTitle = customer ? 'Edit Customer' : 'Add New Customer';
 
     return (
         <form className="form-container" onSubmit={handleSubmit}>
             <h2 className="form-title">{formTitle}</h2>
 
+            {/* First Name field */}
             <div className="form-group">
                 <label htmlFor="firstName">First Name</label>
                 <input
@@ -59,6 +78,7 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
                 />
             </div>
 
+            {/* Last Name field */}
             <div className="form-group">
                 <label htmlFor="lastName">Last Name</label>
                 <input
@@ -71,6 +91,7 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
                 />
             </div>
 
+            {/* Email field */}
             <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <input
@@ -83,6 +104,7 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
                 />
             </div>
 
+            {/* Phone field */}
             <div className="form-group">
                 <label htmlFor="phone">Phone</label>
                 <input
@@ -95,6 +117,7 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
                 />
             </div>
 
+            {/* Address field - optional */}
             <div className="form-group">
                 <label htmlFor="address">Address</label>
                 <input
@@ -106,6 +129,7 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
                 />
             </div>
 
+            {/* City field - optional */}
             <div className="form-group">
                 <label htmlFor="city">City</label>
                 <input
@@ -117,6 +141,7 @@ const CustomerForm = ({ customer, onSave, onCancel }) => {
                 />
             </div>
 
+            {/* Form action buttons */}
             <div className="button-group">
                 <button type="button" className="btn-secondary" onClick={onCancel}>
                     Cancel

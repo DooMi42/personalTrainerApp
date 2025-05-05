@@ -1,8 +1,12 @@
-// This file contains mock data for customers and training sessions.
+/**
+ * Mock data for the Personal Trainer application
+ * Contains customer data, training sessions, and utility functions
+ */
 
 import { v4 as uuidv4 } from 'uuid';
 
 // Initial mock data for customers
+// Each customer has basic identification and contact information
 export const initialCustomers = [
     {
         id: "c1",
@@ -52,13 +56,14 @@ export const initialCustomers = [
 ];
 
 // Initial mock data for training sessions
+// Each training session links to a customer via customerId
 export const initialTrainings = [
     {
         id: "t1",
-        date: "2025-04-15T10:30:00",
+        date: "2025-04-15T10:30:00", // ISO format date string
         activity: "Running",
-        duration: 30,
-        customerId: "c1"
+        duration: 30, // in minutes
+        customerId: "c1" // references customer with id "c1"
     },
     {
         id: "t2",
@@ -104,10 +109,17 @@ export const initialTrainings = [
     }
 ];
 
-// Helper functions for data manipulation
+/**
+ * Generates a unique ID using UUID v4
+ * Used for creating new customers and training sessions
+ * @returns {string} A unique identifier
+ */
 export const generateId = () => uuidv4();
 
-// Activity options for dropdown
+/**
+ * List of available activities for the training dropdown
+ * Used in the TrainingForm component
+ */
 export const activityOptions = [
     "Running",
     "Yoga",

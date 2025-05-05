@@ -1,20 +1,34 @@
+/**
+ * CustomerList component
+ * Displays a list of customers with search, sort, and CRUD capabilities
+ */
 import { useState } from 'react';
 import CustomerForm from './CustomerForm';
 import { exportToCSV } from '../../utils/csvExport';
 
 const CustomerList = ({ customers, setCustomers }) => {
-    const [search, setSearch] = useState('');
-    const [sortField, setSortField] = useState('lastName');
-    const [sortAsc, setSortAsc] = useState(true);
-    const [showAddForm, setShowAddForm] = useState(false);
-    const [editingCustomer, setEditingCustomer] = useState(null);
+    // State for managing UI functionality
+    const [search, setSearch] = useState(''); // Tracks search input value
+    const [sortField, setSortField] = useState('lastName'); // Current sort column
+    const [sortAsc, setSortAsc] = useState(true); // Sort direction (ascending/descending)
+    const [showAddForm, setShowAddForm] = useState(false); // Controls add form visibility
+    const [editingCustomer, setEditingCustomer] = useState(null); // Tracks customer being edited
 
-    // Handle search input changes
+    /**
+     * Handle search input changes
+     * @param {Event} e - Input change event
+     */
     const handleSearchChange = (e) => {
         setSearch(e.target.value);
     };
 
-    // Handle column sorting
+    /**
+     * Handle column sorting
+     * If clicking the same column, toggle sort direction
+     * If clicking a new column, sort ascending by that column
+     * 
+     * @param {string} field - Field name to sort by
+     */
     const handleSort = (field) => {
         if (field === sortField) {
             setSortAsc(!sortAsc);
@@ -25,12 +39,13 @@ const CustomerList = ({ customers, setCustomers }) => {
     };
 
     // Filter customers based on search text
+    // Searches across first name, last name, and email
     const filteredCustomers = customers.filter((customer) =>
         `${customer.firstName} ${customer.lastName} ${customer.email}`.toLowerCase()
             .includes(search.toLowerCase())
     );
 
-    // Sort filtered customers
+    // Sort filtered customers based on current sort field and direction
     const sortedCustomers = [...filteredCustomers].sort((a, b) => {
         const aValue = a[sortField]?.toString().toLowerCase() || '';
         const bValue = b[sortField]?.toString().toLowerCase() || '';
@@ -40,13 +55,19 @@ const CustomerList = ({ customers, setCustomers }) => {
         return 0;
     });
 
-    // Handle adding new customer
+    /**
+     * Handle adding a new customer
+     * @param {Object} newCustomer - The customer object to add
+     */
     const handleAddCustomer = (newCustomer) => {
         setCustomers([...customers, newCustomer]);
         setShowAddForm(false);
     };
 
-    // Handle updating customer
+    /**
+     * Handle updating an existing customer
+     * @param {Object} updatedCustomer - The updated customer object
+     */
     const handleUpdateCustomer = (updatedCustomer) => {
         setCustomers(
             customers.map((customer) =>
@@ -56,14 +77,19 @@ const CustomerList = ({ customers, setCustomers }) => {
         setEditingCustomer(null);
     };
 
-    // Handle deleting customer
+    /**
+     * Handle deleting a customer with confirmation
+     * @param {string} id - ID of the customer to delete
+     */
     const handleDeleteCustomer = (id) => {
         if (window.confirm('Are you sure you want to delete this customer?')) {
             setCustomers(customers.filter((customer) => customer.id !== id));
         }
     };
 
-    // Handle export to CSV
+    /**
+     * Handle exporting customer data to CSV format
+     */
     const handleExportCSV = () => {
         exportToCSV(customers, 'customers.csv');
     };
@@ -72,6 +98,7 @@ const CustomerList = ({ customers, setCustomers }) => {
         <div>
             <h1>Customers</h1>
 
+            {/* Search and action buttons */}
             <div className="search-box">
                 <input
                     type="text"
@@ -87,10 +114,12 @@ const CustomerList = ({ customers, setCustomers }) => {
                 </button>
             </div>
 
+            {/* Customer data table */}
             <div className="table-container">
                 <table>
                     <thead>
                         <tr>
+                            {/* Column headers with sort indicators */}
                             <th onClick={() => handleSort('firstName')}>
                                 First Name
                                 {sortField === 'firstName' && (
@@ -127,6 +156,7 @@ const CustomerList = ({ customers, setCustomers }) => {
                         </tr>
                     </thead>
                     <tbody>
+                        {/* Map through sorted customers to create table rows */}
                         {sortedCustomers.map((customer) => (
                             <tr key={customer.id}>
                                 <td>{customer.firstName}</td>
@@ -134,6 +164,7 @@ const CustomerList = ({ customers, setCustomers }) => {
                                 <td>{customer.email}</td>
                                 <td>{customer.phone}</td>
                                 <td>
+                                    {/* Edit and Delete buttons */}
                                     <button
                                         className="btn-secondary"
                                         onClick={() => setEditingCustomer(customer)}
@@ -153,7 +184,7 @@ const CustomerList = ({ customers, setCustomers }) => {
                 </table>
             </div>
 
-            {/* Add Customer Form Modal */}
+            {/* Add Customer Form Modal - conditionally rendered */}
             {showAddForm && (
                 <div className="modal-backdrop">
                     <div className="modal">
@@ -165,7 +196,7 @@ const CustomerList = ({ customers, setCustomers }) => {
                 </div>
             )}
 
-            {/* Edit Customer Form Modal */}
+            {/* Edit Customer Form Modal - conditionally rendered */}
             {editingCustomer && (
                 <div className="modal-backdrop">
                     <div className="modal">

@@ -1,7 +1,12 @@
 /**
+ * Utility function for exporting customer data to CSV format
+ */
+
+/**
  * Exports an array of customers to a CSV file and triggers a download
+ * 
  * @param {Array} customers - Array of customer objects to export
- * @param {string} filename - Name of the file to download
+ * @param {string} filename - Name of the file to download (defaults to 'customers.csv')
  */
 export const exportToCSV = (customers, filename = 'customers.csv') => {
     // Define the columns we want to export (excluding any action columns)
@@ -17,7 +22,7 @@ export const exportToCSV = (customers, filename = 'customers.csv') => {
             // Get the property value, or empty string if undefined
             const value = customer[key] || '';
 
-            // Wrap value in quotes and escape any internal quotes
+            // Wrap value in quotes and escape any internal quotes (CSV standard)
             return `"${String(value).replace(/"/g, '""')}"`;
         });
 
@@ -36,5 +41,5 @@ export const exportToCSV = (customers, filename = 'customers.csv') => {
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
+    document.body.removeChild(link); // Clean up DOM
 };
