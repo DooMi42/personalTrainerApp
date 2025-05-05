@@ -5,6 +5,6 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   base: process.env.NODE_ENV === 'production'
-    ? '/personal-trainer-app/' // Change this to match your repo name
+    ? '/personalTrainerApp/' // Change this to match your repo name
     : '/',
 });
